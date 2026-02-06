@@ -1,10 +1,7 @@
 /** @type {import('next').NextConfig} */
-const isProd = process.env.NODE_ENV === "production";
-
 const nextConfig = {
-  output: "export",
-  images: { unoptimized: true },
-  basePath: isProd ? "/terraria-checklist" : "",
+  reactStrictMode: true,
+  output: "standalone" // ensures Vercel serves the Next.js output correctly
 };
 
 module.exports = nextConfig;
