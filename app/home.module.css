@@ -1,0 +1,39 @@
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.panel {
+  background: var(--panel-bg);
+  border: 4px solid var(--panel-border);
+  border-radius: 14px;
+  padding: 40px 48px;
+  text-align: center;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7);
+}
+
+.title {
+  font-size: 36px;
+  color: var(--accent);
+  margin-bottom: 30px;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.field {
+  margin-bottom: 18px;
+}
+
+.field input {
+  width: 280px;
+  text-align: center;
+}
+
+.btn {
+  margin-top: 20px;
+}

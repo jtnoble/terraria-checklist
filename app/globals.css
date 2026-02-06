@@ -1,26 +1,63 @@
-@import "tailwindcss";
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --panel-bg: rgba(34, 25, 18, 0.85);
+  --panel-border: #6b4e2e;
+  --accent: #7bd88f;
+  --text-main: #f5f1e6;
+  --text-muted: #cfc6b8;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Reset */
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: var(--text-main);
+  font-family: "VT323", monospace;
+  font-size: 18px;
+}
+
+/* Full background */
+body {
+  min-height: 100vh;
+  background-image: url("/terraria-background.webp");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* Titles */
+h1,
+h2,
+h3 {
+  font-family: "Press Start 2P", cursive;
+  letter-spacing: 1px;
+}
+
+/* Buttons */
+button {
+  font-family: "Press Start 2P", cursive;
+  font-size: 12px;
+  background: linear-gradient(#8b6b3f, #6b4e2e);
+  border: 2px solid #4a3520;
+  color: #fff;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(1.1);
+}
+
+/* Inputs */
+input {
+  font-family: "VT323", monospace;
+  background: #1f1a14;
+  border: 2px solid #4a3520;
+  color: var(--text-main);
+  padding: 10px;
+  font-size: 18px;
 }

@@ -1,0 +1,15 @@
+.spinner {
+  margin: 20px auto;
+  width: 32px;
+  height: 32px;
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
