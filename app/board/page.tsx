@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import styles from "./board.module.css";
 import spinner from "../spinner.module.css";
 import { createChecklist } from "../lib/createBoard";
+import { PROGRESS_TYPE } from "../lib/seed";
 
 // Types
 interface Item {
@@ -174,10 +175,22 @@ export default function BoardPage() {
     if (loadingNewChecklist || !boardId) return;
     const name = prompt("New checklist name");
     if (!name) return;
+    const progressTypeInput = prompt("Enter '1' for PRE HARDMODE, '2' for HARDMODE, or nothing for nothing");
+    let progressType;
+    switch (progressTypeInput) {
+      case "1":
+        progressType = PROGRESS_TYPE.PRE_HARDMODE;
+        break;
+      case "2":
+        progressType = PROGRESS_TYPE.HARDMODE;
+        break;
+      default:
+        progressType = PROGRESS_TYPE.DEFAULT_PROGRESS;
+    }
 
     setLoadingNewChecklist(true);
     try {
-      const newCL = await createChecklist(boardId, name);
+      const newCL = await createChecklist(boardId, name, progressType);
       setChecklists(prev => [...prev, newCL]);
       setActiveChecklist(newCL.id);
     } catch (err) {
@@ -291,8 +304,6 @@ export default function BoardPage() {
           <button onClick={addCategory}>+ Add Category</button>
         </div>
         
-        
-
         {/* CATEGORY GRID */}
         <div className={styles.grid}>
           {data.map(cat => (

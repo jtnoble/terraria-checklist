@@ -5,6 +5,7 @@ import { createBoard } from "./lib/createBoard";
 import { useRouter } from "next/navigation";
 import styles from "./home.module.css";
 import spinner from "./spinner.module.css";
+import { PROGRESS_TYPE } from "./lib/seed";
 
 export default function Home() {
   const [name, setName] = useState("");
@@ -20,10 +21,23 @@ export default function Home() {
       return;
     }
 
+    const progressTypeInput = prompt("Enter '1' for PRE HARDMODE, '2' for HARDMODE, or nothing for nothing");
+        let progressType;
+        switch (progressTypeInput) {
+          case "1":
+            progressType = PROGRESS_TYPE.PRE_HARDMODE;
+            break;
+          case "2":
+            progressType = PROGRESS_TYPE.HARDMODE;
+            break;
+          default:
+            progressType = PROGRESS_TYPE.DEFAULT_PROGRESS;
+        }
+
     setLoading(true);
 
     try {
-      const id = await createBoard(name, password);
+      const id = await createBoard(name, password, progressType);
       router.push(`/board?id=${id}`);
     } catch (err) {
       console.error(err);

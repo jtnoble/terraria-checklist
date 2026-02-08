@@ -1,9 +1,21 @@
 import { supabase } from "./supabase";
 import bcrypt from "bcryptjs";
-import { DEFAULT_CATEGORIES } from "./seed";
+import { PRE_HARDMODE, HARDMODE, PROGRESS_TYPE, Category } from "./seed";
 
-export async function createBoard(name: string, password: string) {
+export async function createBoard(name: string, password: string, progressType: PROGRESS_TYPE) {
   const password_hash = await bcrypt.hash(password, 10);
+
+  const getCategories = (progressType: PROGRESS_TYPE): Category[] => {
+    switch (progressType) {
+      case PROGRESS_TYPE.PRE_HARDMODE:
+        return PRE_HARDMODE;
+      case PROGRESS_TYPE.HARDMODE:
+        return HARDMODE;
+      default:
+        return [];
+    }
+  };
+
 
   const { data: board } = await supabase
     .from("boards")
@@ -18,8 +30,9 @@ export async function createBoard(name: string, password: string) {
     .select()
     .single();
 
-  for (let i = 0; i < DEFAULT_CATEGORIES.length; i++) {
-    const cat = DEFAULT_CATEGORIES[i];
+  const categories: Category[] = getCategories(progressType);
+  for (let i = 0; i < categories.length; i++) {
+    const cat = categories[i];
     const { data: category } = await supabase
       .from("categories")
       .insert({
@@ -42,7 +55,18 @@ export async function createBoard(name: string, password: string) {
   return board.id;
 }
 
-export async function createChecklist(boardId: string, name: string) {
+export async function createChecklist(boardId: string, name: string, progressType: PROGRESS_TYPE) {
+  const getCategories = (progressType: PROGRESS_TYPE): Category[] => {
+    switch (progressType) {
+      case PROGRESS_TYPE.PRE_HARDMODE:
+        return PRE_HARDMODE;
+      case PROGRESS_TYPE.HARDMODE:
+        return HARDMODE;
+      default:
+        return [];
+    }
+  };
+
   // 1. Create checklist
   const { data: checklist } = await supabase
     .from("checklists")
@@ -53,7 +77,8 @@ export async function createChecklist(boardId: string, name: string) {
   if (!checklist) throw new Error("Failed to create checklist");
 
   // 2. Prepare all categories for batch insert
-  const categoriesToInsert = DEFAULT_CATEGORIES.map((cat, idx) => ({
+  const categories: Category[] = getCategories(progressType);
+  const categoriesToInsert = categories.map((cat, idx) => ({
     checklist_id: checklist.id,
     name: cat.name,
     sort_order: idx
@@ -69,7 +94,7 @@ export async function createChecklist(boardId: string, name: string) {
 
   // 3. Prepare all items for batch insert
   const itemsToInsert = insertedCategories.flatMap((cat, catIdx) =>
-    DEFAULT_CATEGORIES[catIdx].items.map((label, itemIdx) => ({
+    categories[catIdx].items.map((label, itemIdx) => ({
       category_id: cat.id,
       label,
       completed: false,
